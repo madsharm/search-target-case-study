@@ -9,10 +9,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +21,7 @@ public class FileParser {
      * @return
      * @throws IOException
      */
-    public Map<String, Statistics> parseFiles(File documentFolder) {
+    public Map<String, Set<WordInFileCount>> parseFiles(File documentFolder) {
         File[] textFiles = documentFolder.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -36,8 +33,8 @@ public class FileParser {
                     .map(f -> parseFile(f))
                     .flatMap(m -> m.entrySet().stream())
                     .collect(Collectors.toMap(e -> e.getKey() ,
-                            e -> new Statistics(e.getKey(), e.getValue()),
-                            (s1,s2) -> s1.addWordInFileCount(s2.getWordCounts())));
+                            e -> new TreeSet<>(Arrays.asList(e.getValue())),
+                            (s1,s2) -> {s1.addAll(s2); return s1;}));
 
         } else {
             return new HashMap<>(0);

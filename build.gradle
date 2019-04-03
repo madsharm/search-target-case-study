@@ -25,7 +25,7 @@ repositories {
 
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
-    compile 'com.google.guava:guava:27.0.1-jre'
+    compile 'org.apache.commons:commons-collections4:4.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
 
     // Use JUnit test framework

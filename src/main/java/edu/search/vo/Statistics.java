@@ -1,6 +1,9 @@
 package edu.search.vo;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Set;
 import java.util.StringJoiner;
@@ -20,12 +23,14 @@ public class Statistics {
         this.wordCounts.add(wordCount);
     }
 
-    @JsonGetter("word")
+    @JsonIgnore
     public String getWord() {
         return word;
     }
 
     @JsonGetter("count")
+    @JsonDeserialize(as=TreeSet.class)
+    @JsonSerialize(as=TreeSet.class)
     public Set<WordInFileCount> getWordCounts() {
         return wordCounts;
     }
