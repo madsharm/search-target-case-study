@@ -2,7 +2,7 @@ package edu.search.vo;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-public class WordInFileCount {
+public class WordInFileCount implements Comparable<WordInFileCount>{
 
     private String fileName;
     private int count;
@@ -37,6 +37,12 @@ public class WordInFileCount {
         return (obj instanceof WordInFileCount)
                 && (((WordInFileCount) obj).count == count
                 && ((WordInFileCount) obj).fileName.equals(fileName));
+    }
+
+    @Override
+    public int compareTo(WordInFileCount wc) {
+        //ensure sorting happens in descending order of relevancy
+        return wc.count - this.count;
     }
 
     @Override

@@ -2,14 +2,14 @@ package edu.search.vo;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
+import java.util.TreeSet;
 
 public class Statistics {
     private String word;
 
-    private List<WordInFileCount> wordCounts = new ArrayList<>(10);
+    private Set<WordInFileCount> wordCounts = new TreeSet();
 
     public Statistics(String word) {
         this.word = word;
@@ -26,7 +26,7 @@ public class Statistics {
     }
 
     @JsonGetter("count")
-    public List<WordInFileCount> getWordCounts() {
+    public Set<WordInFileCount> getWordCounts() {
         return wordCounts;
     }
 
@@ -34,7 +34,7 @@ public class Statistics {
         this.wordCounts.add(wordCount);
         return this;
     }
-    public Statistics addWordInFileCount(List<WordInFileCount> wordCount) {
+    public Statistics addWordInFileCount(Set<WordInFileCount> wordCount) {
         this.wordCounts.addAll(wordCount);
         return this;
     }
