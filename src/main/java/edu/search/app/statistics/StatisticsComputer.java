@@ -1,10 +1,8 @@
 package edu.search.app.statistics;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
+import edu.search.app.search.Search;
 import edu.search.fileparser.FileParser;
-import edu.search.vo.Statistics;
 import edu.search.vo.WordInFileCount;
 
 import java.io.File;
@@ -30,9 +28,15 @@ public class StatisticsComputer {
         File documentFolder = new File(classLoader.getResource("documents").getFile());
         Map<String, Set<WordInFileCount>> statistics = parser.parseFiles(documentFolder);
 
-        String statsLocation = Optional.ofNullable(args).map(a -> a[0]).orElse(documentFolder.getAbsolutePath()+"/statistics.json");
+        String statisticsLocation = null;
+        if (args.length > 0) {
+            statisticsLocation = args[0];
+        } else {
+            statisticsLocation = documentFolder.getAbsolutePath()+"/statistics.json";
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(new File(statsLocation) , statistics);
+        objectMapper.writeValue(new File(statisticsLocation) , statistics);
 
     }
 

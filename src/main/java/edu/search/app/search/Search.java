@@ -2,11 +2,13 @@ package edu.search.app.search;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import edu.search.engine.SearcherFactory;
 import edu.search.fileparser.StatisticsDeserializer;
 import edu.search.model.IndexedSearchDataModel;
 import edu.search.model.IndexedSearchTrie;
 import edu.search.model.SimpleSearchDataModel;
 import edu.search.model.SimpleSearchTrie;
+import edu.search.vo.TimedSearchResult;
 import edu.search.vo.WordInFileCount;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Search {
@@ -26,13 +29,36 @@ public class Search {
 
         Map<String, Set<WordInFileCount>> statistics = loadStatisticsData(args);
         initializeSearchDataModel(statistics);
-        promptUser();
+        try (Scanner in = new Scanner(System.in)) {
+            do {
+            } while (promptUser(in));
+        }
 
 
     }
 
-    private static void promptUser() {
-        
+    private static boolean promptUser(Scanner in) {
+
+            String term = null;
+            do {
+                System.out.println("Enter the search term: ");
+                term = in.nextLine();
+            } while (term == null || term.trim().isEmpty());
+
+            int choice = -1;
+            do {
+                System.out.println("Enter the search mode: 1)String/RegEx(ab*/*ab*/*ab)  2)Indexed Search ");
+                choice = in.nextInt();
+            } while (choice != 1 && choice != 2);
+
+            TimedSearchResult result =
+                    SearcherFactory.getInstance().getSearcher(SearcherFactory.MODE.getMode(choice)).timedSearch(term);
+
+            System.out.println("Search Results are : " + result.getResult());
+            System.out.println("Time Elapsed in Search (ms) : " + result.getTimeElapsedInSearch());
+
+            return true;
+
     }
 
     private static Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException {
@@ -45,6 +71,7 @@ public class Search {
             statisticsLocation = defaultFile.getAbsolutePath();
         }
 
+        System.out.println("Loading statistics from file " + statisticsLocation);
         //Read statistics and load in the data structure
         byte[] bytes = Files.readAllBytes(Paths.get(statisticsLocation));
         ObjectMapper objectMapper = new ObjectMapper();

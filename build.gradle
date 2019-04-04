@@ -23,6 +23,11 @@ repositories {
     jcenter()
 }
 
+run{
+    standardInput = System.in
+    standardOutput = System.out
+}
+
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'org.apache.commons:commons-collections4:4.0'
@@ -35,6 +40,11 @@ dependencies {
     testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 
+}
+
+task(runStatisticsComputer, dependsOn: 'classes', type: JavaExec) {
+    main = 'edu.search.app.statistics.StatisticsComputer'
+    classpath = sourceSets.main.runtimeClasspath
 }
 
 // Define the main class for the application

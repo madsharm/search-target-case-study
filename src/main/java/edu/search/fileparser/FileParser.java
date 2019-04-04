@@ -1,6 +1,5 @@
 package edu.search.fileparser;
 
-import edu.search.vo.Statistics;
 import edu.search.vo.WordCount;
 import edu.search.vo.WordInFileCount;
 

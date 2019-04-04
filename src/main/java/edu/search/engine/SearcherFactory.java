@@ -7,7 +7,18 @@ public class SearcherFactory {
 
     private static SearcherFactory instance = new SearcherFactory();
 
-    public enum MODE {SIMPLE, INDEXED}
+    public enum MODE {
+        SIMPLE(1), INDEXED(2);
+
+        private final int choice;
+
+        MODE(int choice) {
+            this.choice = choice;
+        }
+        public static MODE getMode(int choice) {
+            return choice == 1 ? SIMPLE : INDEXED;
+        }
+    }
 
     public static SearcherFactory getInstance() {
         return instance;
