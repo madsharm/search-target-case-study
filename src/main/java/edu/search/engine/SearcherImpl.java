@@ -25,7 +25,7 @@ public class SearcherImpl implements Searcher {
         Instant start = Instant.now();
         Map<String, Set<WordInFileCount>> searches = model.getSearches(searchTerm);
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
+        long timeElapsed = Duration.between(start, finish).toNanos();
         return new TimedSearchResult(searches, timeElapsed);
     }
 

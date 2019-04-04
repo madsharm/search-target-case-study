@@ -14,4 +14,9 @@ public class SearchResult {
     public Map<String, Set<WordInFileCount>> getResult() {
         return result;
     }
+
+    @Override
+    public String toString() {
+        return result.toString();
+    }
 }

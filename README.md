@@ -85,14 +85,34 @@ Example of trie with words [france, frack, friend, fries]:
     ```
 + Search Support
     * Exact String Match - Similar to simple search
-    * Perfix String Match - Similar to simple search
+    * Prefix String Match - Similar to simple search
     * Suffix Match - Suffix search happens in two steps. Consider exmaple *ance.
         + Search for *ance will leverage suffix index and will perform prefix search for key with - ecna. Which in above example trie index, will return ancefr[france] and anced[dance].
         + Values returned from above suffix index search will be used to perform exact string match in core search trie and matched results will be returned
     * Sub String match - Search happens in two steps. Consider exmaple *o*.
-        + Search for *o* will leverage suffix index and will perform prefix search for key with - o. Which in above example trie index, will return o[ro*, bo*] , oo [roo*] and or [tor*].
-        + Values returned from above substring index search will be used to perform prefix string match in core search trie and matched results will be returned - [root, bot and torn].
+        + Search for *o* will leverage substring index and will perform prefix search for key with - o. Which in above example trie index, will return o[ro*, bo*] , oo [roo*] and or [tor*].
+        + Values returned from above substring index search will be used to perform prefix match in core search trie and matched results will be returned - [root, bot and torn].
     * Performance of suffix and sub string match using indexes have significantly improved.
 
-TODO
-a) Adding logging and appropriate exception handling
+
+# Performance Evaluation
+
+Below is the stats from the performance test case:
+
+```
+Loading statistics from file D:\MS\target\search-target-case-study\out\production\resources\statistics.json
+Average Time for regex search using Simple Search (ns) = 12908.5
+Average Time for regex search using Indexed Search (ns) = 8038.5
+Average Time for exact string search using Simple Search (ns) = 160.0
+Average Time for exact string search using Indexed Search (ns) = 156.0
+```
+
+Observations are:
++ No significant difference in exact string match since both simple as indexed search uses same trie data structure for the search
++ Notice 60% improvement in prefix searches when using indexed based search. This is because of the suffix index and substring index that we have created. Due to this, iteration over entire set of keys is avoided.
+
+
+# Scalability
++ The approach needs to cater to massive data as well as huge number of requests coming in.
++ To handle massive data, we can have some sort of distributed data storage (eg. cassandra or elastic) and use functions exposed by these data storage to perform the search
++ To handle massive requests coming in, we can scale up the search engine service by adding more nodes. Also, we should evaluate how many threads/connections can one node handle and optimize.

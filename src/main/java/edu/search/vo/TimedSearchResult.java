@@ -15,4 +15,9 @@ public class TimedSearchResult extends SearchResult {
     public long getTimeElapsedInSearch() {
         return timeElapsedInSearch;
     }
+
+    @Override
+    public String toString() {
+        return "Result in (ns) " + timeElapsedInSearch + " " + super.toString();
+    }
 }

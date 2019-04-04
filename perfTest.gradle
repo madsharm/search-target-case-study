@@ -1,0 +1,13 @@
+sourceSets {
+    perfTest {
+        compileClasspath += sourceSets.main.output + configurations.testCompile
+        runtimeClasspath += output + compileClasspath + configurations.testRuntime
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs the performance tests.'
+    testClassesDirs = sourceSets.perfTest.output.classesDirs
+    classpath = sourceSets.perfTest.runtimeClasspath
+}
+

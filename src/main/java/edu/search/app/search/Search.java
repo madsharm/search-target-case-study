@@ -26,18 +26,22 @@ public class Search {
     }
 
     public static void main(String[] args) throws IOException {
-
-        Map<String, Set<WordInFileCount>> statistics = loadStatisticsData(args);
-        initializeSearchDataModel(statistics);
+        Search search = new Search();
+        search.initSearchEngine(args);
         try (Scanner in = new Scanner(System.in)) {
             do {
-            } while (promptUser(in));
+            } while (search.promptUser(in));
         }
 
 
     }
 
-    private static boolean promptUser(Scanner in) {
+    public void initSearchEngine(String[] args) throws IOException {
+        Map<String, Set<WordInFileCount>> statistics = loadStatisticsData(args);
+        initializeSearchDataModel(statistics);
+    }
+
+    private boolean promptUser(Scanner in) {
 
             String term = null;
             do {
@@ -51,17 +55,20 @@ public class Search {
                 choice = in.nextInt();
             } while (choice != 1 && choice != 2);
 
-            TimedSearchResult result =
-                    SearcherFactory.getInstance().getSearcher(SearcherFactory.MODE.getMode(choice)).timedSearch(term);
+        TimedSearchResult result = search(term, SearcherFactory.MODE.getMode(choice));
 
-            System.out.println("Search Results are : " + result.getResult());
-            System.out.println("Time Elapsed in Search (ms) : " + result.getTimeElapsedInSearch());
+        System.out.println("Search Results are : " + result.getResult());
+            System.out.println("Time Elapsed in Search (ms) : " + (result.getTimeElapsedInSearch()/1000));
 
             return true;
 
     }
 
-    private static Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException {
+    public TimedSearchResult search(String term, SearcherFactory.MODE mode) {
+        return SearcherFactory.getInstance().getSearcher(mode).timedSearch(term);
+    }
+
+    public Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException {
         String statisticsLocation = null;
         if (args.length > 0) {
             statisticsLocation = args[0];
@@ -81,7 +88,7 @@ public class Search {
         return objectMapper.readValue(bytes, Map.class);
     }
 
-    private static void initializeSearchDataModel(Map<String, Set<WordInFileCount>> statistics) {
+    private void initializeSearchDataModel(Map<String, Set<WordInFileCount>> statistics) {
         //load both simple and indexed data structures during init and then we can compare performances of both
         SimpleSearchDataModel trie = SimpleSearchTrie.getInstance();
         trie.loadData(statistics);
