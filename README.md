@@ -11,7 +11,7 @@ Create three methods for searching the documents:
 # Assumptions
 * Case insensitive search
 * Only text keys considered, not numbers and punctuations
-* Support string match (freebird), prefix match(free*), suffix match(*bird), substring match(*eebi*)
+* Support string match (freebird), prefix match(free*), suffix match(*bird), substring match(\*eebi\*)
 
 # Approach
 The program works in two steps:
@@ -89,8 +89,8 @@ Example of trie with words [france, frack, friend, fries]:
     * Suffix Match - Suffix search happens in two steps. Consider exmaple *ance.
         + Search for *ance will leverage suffix index and will perform prefix search for key with - ecna. Which in above example trie index, will return ancefr[france] and anced[dance].
         + Values returned from above suffix index search will be used to perform exact string match in core search trie and matched results will be returned
-    * Sub String match - Search happens in two steps. Consider exmaple *o*.
-        + Search for *o* will leverage substring index and will perform prefix search for key with - o. Which in above example trie index, will return o[ro*, bo*] , oo [roo*] and or [tor*].
+    * Sub String match - Search happens in two steps. Consider exmaple \*o\*.
+        + Search for \*o\* will leverage substring index and will perform prefix search for key with - o. Which in above example trie index, will return o[ro*, bo*] , oo [roo*] and or [tor*].
         + Values returned from above substring index search will be used to perform prefix match in core search trie and matched results will be returned - [root, bot and torn].
     * Performance of suffix and sub string match using indexes have significantly improved.
 
