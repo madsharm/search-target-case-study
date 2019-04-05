@@ -13,8 +13,10 @@ import edu.search.vo.WordInFileCount;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -25,7 +27,7 @@ public class Search {
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         Search search = new Search();
         search.initSearchEngine(args);
         try (Scanner in = new Scanner(System.in)) {
@@ -36,7 +38,7 @@ public class Search {
 
     }
 
-    public void initSearchEngine(String[] args) throws IOException {
+    public void initSearchEngine(String[] args) throws IOException, URISyntaxException {
         Map<String, Set<WordInFileCount>> statistics = loadStatisticsData(args);
         initializeSearchDataModel(statistics);
     }
@@ -68,24 +70,36 @@ public class Search {
         return SearcherFactory.getInstance().getSearcher(mode).timedSearch(term);
     }
 
-    public Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException {
-        String statisticsLocation = null;
-        if (args.length > 0) {
-            statisticsLocation = args[0];
-        } else {
-            ClassLoader classLoader = Search.class.getClassLoader();
-            File defaultFile = new File(classLoader.getResource("statistics.json").getFile());
-            statisticsLocation = defaultFile.getAbsolutePath();
-        }
+    public Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException, URISyntaxException {
+        byte[] bytes = readStatisticsFile(args);
 
-        System.out.println("Loading statistics from file " + statisticsLocation);
         //Read statistics and load in the data structure
-        byte[] bytes = Files.readAllBytes(Paths.get(statisticsLocation));
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Map.class, new StatisticsDeserializer());
         objectMapper.registerModule(module);
         return objectMapper.readValue(bytes, Map.class);
+    }
+
+    private byte[] readStatisticsFile(String[] args) throws IOException, URISyntaxException {
+        if (args.length > 0) {
+            System.out.println("Loading statistics from file " + args[0]);
+            return Files.readAllBytes(Paths.get(args[0]));
+        } else {
+            System.out.println("Loading default statistics file ");
+            URI uri = getClass().getClassLoader()
+                    .getResource("statistics.json")
+                    .toURI();
+            final Map<String, String> env = new HashMap<>();
+            if (uri.toString().contains("!")) {
+                final String[] array = uri.toString().split("!");
+                final FileSystem fs = FileSystems.newFileSystem(URI.create(array[0]), env);
+                final Path path = fs.getPath(array[1]);
+                return Files.readAllBytes(path);
+            } else {
+                return Files.readAllBytes(Paths.get(uri));
+            }
+        }
     }
 
     private void initializeSearchDataModel(Map<String, Set<WordInFileCount>> statistics) {

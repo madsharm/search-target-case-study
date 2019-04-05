@@ -1,0 +1,1 @@
+java -jar ./search-target-case-study.jar statistics.json

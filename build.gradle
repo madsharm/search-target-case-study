@@ -30,6 +30,16 @@ run{
     standardOutput = System.out
 }
 
+jar {
+    manifest {
+        attributes "Main-Class": "edu.search.app.search.Search"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'org.apache.commons:commons-collections4:4.0'

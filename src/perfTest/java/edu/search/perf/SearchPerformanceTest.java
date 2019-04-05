@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 public class SearchPerformanceTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
         Search search = new Search();
         search.initSearchEngine(args);
@@ -82,7 +83,7 @@ public class SearchPerformanceTest {
 
     }
 
-    static List<String> loadTestData(Search search, String[] args) throws IOException {
+    static List<String> loadTestData(Search search, String[] args) throws IOException, URISyntaxException {
         Set<String> keys = search.loadStatisticsData(args).keySet();
         return new ArrayList<>(keys);
 
