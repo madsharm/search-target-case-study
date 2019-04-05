@@ -30,9 +30,9 @@ To run:
   Note: If no argument is specified, then statistics file under resources will be used ( it is checked in for convenience). You can just do - gradlew --console=plain run.
 
 # How to run using Docker
- docker pull madsharm/search-target-case-study:latest
- docker run -it madsharm/search-target-case-study bash
- ./start.sh
+- docker pull madsharm/search-target-case-study:latest
+- docker run -it madsharm/search-target-case-study bash
+- ./start.sh
 
 # Design
 
