@@ -13,7 +13,7 @@ Create three methods for searching the documents:
 * Only text keys considered, not numbers and punctuations
 * Support string match (freebird), prefix match(free*), suffix match(*bird), substring match(\*eebi\*)
 
-# Approach
+# How to run using Gradle
 The program works in two steps:
 * Optional step: Parse the document files and create statistics file containing stats about each word - how many times it appears in each file in desc order of relevancy.
 To run parsing utility:
@@ -28,6 +28,11 @@ To run:
 [where argument represents where to load the statistics file from]
 
   Note: If no argument is specified, then statistics file under resources will be used ( it is checked in for convenience). You can just do - gradlew --console=plain run.
+
+# How to run using Docker
+ docker pull madsharm/search-target-case-study:latest
+ docker run -it madsharm/search-target-case-study bash
+ ./start.sh
 
 # Design
 
