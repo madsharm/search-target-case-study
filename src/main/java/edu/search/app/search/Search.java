@@ -10,8 +10,9 @@ import edu.search.model.SimpleSearchDataModel;
 import edu.search.model.SimpleSearchTrie;
 import edu.search.vo.TimedSearchResult;
 import edu.search.vo.WordInFileCount;
+import org.springframework.stereotype.Component;
 
-import java.io.File;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+@Component
 public class Search {
 
     public Search() {
@@ -42,6 +44,14 @@ public class Search {
         Map<String, Set<WordInFileCount>> statistics = loadStatisticsData(args);
         initializeSearchDataModel(statistics);
     }
+
+    //need no arg life cycle method
+    @PostConstruct
+    public void initSearchEngine() throws IOException, URISyntaxException {
+        Map<String, Set<WordInFileCount>> statistics =  loadStatisticsData(new String[0]);
+        initializeSearchDataModel(statistics);
+    }
+
 
     private boolean promptUser(Scanner in) {
 

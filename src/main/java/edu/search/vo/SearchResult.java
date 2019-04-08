@@ -1,5 +1,7 @@
 package edu.search.vo;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ public class SearchResult {
         this.result = result;
     }
 
+    @JsonGetter(value = "searchResults")
     public Map<String, Set<WordInFileCount>> getResult() {
         return result;
     }

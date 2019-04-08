@@ -18,6 +18,11 @@ public class SearcherFactory {
         public static MODE getMode(int choice) {
             return choice == 1 ? SIMPLE : INDEXED;
         }
+        public static MODE getMode(String mode) {
+            return mode.equals(SIMPLE.toString().toLowerCase()) ? SIMPLE :
+                    (mode.equals(INDEXED.toString().toLowerCase()) ? INDEXED :
+                    null);
+        }
     }
 
     public static SearcherFactory getInstance() {

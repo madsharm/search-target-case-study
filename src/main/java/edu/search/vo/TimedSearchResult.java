@@ -1,5 +1,7 @@
 package edu.search.vo;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ public class TimedSearchResult extends SearchResult {
         timeElapsedInSearch = timeElapsed;
     }
 
+    @JsonGetter(value = "timeElapsedInNanoSec")
     public long getTimeElapsedInSearch() {
         return timeElapsedInSearch;
     }

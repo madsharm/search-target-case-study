@@ -53,10 +53,19 @@ dependencies {
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
     testCompile  group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
+    //spring boot
+    compile("org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE")
+    testCompile("org.springframework.boot:spring-boot-starter-test:2.1.4.RELEASE")
+
 }
 
 task(runStatisticsComputer, dependsOn: 'classes', type: JavaExec) {
     main = 'edu.search.app.statistics.StatisticsComputer'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task(runService, dependsOn: 'classes', type: JavaExec) {
+    main = 'edu.search.rs.SearchRestService'
     classpath = sourceSets.main.runtimeClasspath
 }
 
