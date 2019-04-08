@@ -47,6 +47,7 @@ class FileParserTest extends Specification {
 
         when:
         def result = parser.parseFiles(documentFolder)
+        println result
 
         then:
         print(result)
@@ -57,15 +58,15 @@ class FileParserTest extends Specification {
         result["2000"] == null
         result["2,000"] == null
 
-        result["really"].getWordCounts().size() == 4
-        result["really"].getWordCounts().contains(new WordInFileCount("example1.txt",2))
-        result["really"].getWordCounts().contains(new WordInFileCount("example2.txt",2))
-        result["really"].getWordCounts().contains(new WordInFileCount("example3.txt",2))
-        result["really"].getWordCounts().contains(new WordInFileCount("example4.txt",2))
+        result["really"].size() == 4
+        result["really"].contains(new WordInFileCount("example1.txt",2))
+        result["really"].contains(new WordInFileCount("example2.txt",2))
+        result["really"].contains(new WordInFileCount("example3.txt",2))
+        result["really"].contains(new WordInFileCount("example4.txt",2))
 
-        result["awesome"].getWordCounts().size() == 2
-        result["awesome"].getWordCounts().contains(new WordInFileCount("example2.txt",1))
-        result["awesome"].getWordCounts().contains(new WordInFileCount("example4.txt",2))
+        result["awesome"].size() == 2
+        result["awesome"].contains(new WordInFileCount("example2.txt",1))
+        result["awesome"].contains(new WordInFileCount("example4.txt",2))
 
     }
 

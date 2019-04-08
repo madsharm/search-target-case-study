@@ -41,8 +41,12 @@ public class WordInFileCount implements Comparable<WordInFileCount>{
 
     @Override
     public int compareTo(WordInFileCount wc) {
-        //ensure sorting happens in descending order of relevancy
-        return wc.count - this.count;
+        if(fileName.compareTo(wc.fileName) == 0) {
+            //ensure sorting happens in descending order of relevancy
+            return (wc.count - this.count);
+        } else {
+            return fileName.compareTo(wc.fileName);
+        }
     }
 
     @Override

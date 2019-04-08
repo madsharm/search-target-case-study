@@ -12,6 +12,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toSet;
+
 public class FileParser {
 
     /**
@@ -33,11 +35,16 @@ public class FileParser {
                     .flatMap(m -> m.entrySet().stream())
                     .collect(Collectors.toMap(e -> e.getKey() ,
                             e -> new TreeSet<>(Arrays.asList(e.getValue())),
-                            (s1,s2) -> {s1.addAll(s2); return s1;}));
+                            (s1,s2) -> add(s1,s2) ));
 
         } else {
             return new HashMap<>(0);
         }
+    }
+
+    Set<WordInFileCount> add(Set<WordInFileCount> set, Set<WordInFileCount> wc) {
+        set.addAll(wc);
+        return set;
     }
 
     /**
@@ -49,12 +56,13 @@ public class FileParser {
 
         try (Stream<String> lineStream = Files.lines(Paths.get(textFile.getAbsolutePath())))
         {
-            return lineStream
+            Map<String, WordInFileCount> collect = lineStream
                     .map(l -> parseLine(l))
                     .flatMap(m -> m.entrySet().stream())
-                    .collect(Collectors.toMap(e -> e.getKey() ,
-                            e -> new WordInFileCount(textFile.getName(), e.getValue()) ,
-                            (c1,c2) -> c1.incrementCount(c2)));
+                    .collect(Collectors.toMap(e -> e.getKey(),
+                            e -> new WordInFileCount(textFile.getName(), e.getValue()),
+                            (c1, c2) -> c1.incrementCount(c2)));
+            return collect;
         } catch (IOException e) {
             //TODO: log and proper exception handling
             System.out.println("Exception while processing text file " + textFile.getName());

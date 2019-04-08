@@ -1,14 +1,12 @@
 package edu.search.app.statistics;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.search.app.search.Search;
 import edu.search.fileparser.FileParser;
 import edu.search.vo.WordInFileCount;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 public class StatisticsComputer {

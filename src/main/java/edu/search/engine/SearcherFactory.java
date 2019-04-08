@@ -2,10 +2,16 @@ package edu.search.engine;
 
 import edu.search.model.IndexedSearchTrie;
 import edu.search.model.SimpleSearchTrie;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SearcherFactory {
 
+
     private static SearcherFactory instance = new SearcherFactory();
+
+    private SearcherFactory() {
+    }
 
     public enum MODE {
         SIMPLE(1), INDEXED(2);
@@ -31,9 +37,9 @@ public class SearcherFactory {
 
     public Searcher getSearcher(MODE mode) {
         if ( mode.equals(MODE.SIMPLE)) {
-            return new SearcherImpl(SimpleSearchTrie.getInstance());
+            return new SimpleSearcherImpl(SimpleSearchTrie.getInstance());
         } if ( mode.equals(MODE.INDEXED)) {
-            return new SearcherImpl(IndexedSearchTrie.getInstance());
+            return new IndexedSearcherImpl(IndexedSearchTrie.getInstance());
         } else {
             throw new UnsupportedOperationException("Unsupported search mode");
         }

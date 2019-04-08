@@ -10,6 +10,7 @@ import edu.search.model.SimpleSearchDataModel;
 import edu.search.model.SimpleSearchTrie;
 import edu.search.vo.TimedSearchResult;
 import edu.search.vo.WordInFileCount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -25,12 +26,16 @@ import java.util.Set;
 @Component
 public class Search {
 
-    public Search() {
+    private SearcherFactory searcherFactory;
+
+    @Autowired
+    public Search(SearcherFactory searcherFactory) {
+        this.searcherFactory = searcherFactory;
 
     }
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Search search = new Search();
+        Search search = new Search(SearcherFactory.getInstance());
         search.initSearchEngine(args);
         try (Scanner in = new Scanner(System.in)) {
             do {
@@ -77,7 +82,7 @@ public class Search {
     }
 
     public TimedSearchResult search(String term, SearcherFactory.MODE mode) {
-        return SearcherFactory.getInstance().getSearcher(mode).timedSearch(term);
+        return searcherFactory.getSearcher(mode).timedSearch(term);
     }
 
     public Map<String, Set<WordInFileCount>> loadStatisticsData(String[] args) throws IOException, URISyntaxException {

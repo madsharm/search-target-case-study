@@ -4,16 +4,23 @@ import edu.search.model.SimpleSearchDataModel;
 import edu.search.vo.SearchResult;
 import edu.search.vo.TimedSearchResult;
 import edu.search.vo.WordInFileCount;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
-public class SearcherImpl implements Searcher {
+@Service
+public class IndexedSearcherImpl implements Searcher {
+
 
     private SimpleSearchDataModel model;
-    SearcherImpl(SimpleSearchDataModel model) {
+
+    @Autowired
+    IndexedSearcherImpl(@Qualifier("indexedSearchTrie") SimpleSearchDataModel model) {
         this.model = model;
     }
 

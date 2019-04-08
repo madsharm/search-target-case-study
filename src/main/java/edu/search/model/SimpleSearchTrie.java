@@ -2,6 +2,9 @@ package edu.search.model;
 
 import edu.search.vo.WordInFileCount;
 import org.apache.commons.collections4.trie.PatriciaTrie;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
  * Works well for string match as well as prefix matches
  * Unoptimized implementation of suffix and substring matches
  */
+@Repository
+@Qualifier("simpleSearchTrie")
 public class SimpleSearchTrie implements SimpleSearchDataModel {
 
     protected PatriciaTrie<Set<WordInFileCount>> searchTrie;

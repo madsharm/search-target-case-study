@@ -17,11 +17,11 @@ public class SearchPerformanceTest {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-        Search search = new Search();
+        Search search = new Search(SearcherFactory.getInstance());
         search.initSearchEngine(args);
         List<String> testData = loadTestData(search, args);
 
-        int numSearches = 2000000;
+        int numSearches = 500;
         compareSearchPerformance(search, testData, numSearches,"regex");
         compareSearchPerformance(search, testData, numSearches,"exact string");
 

@@ -2,6 +2,8 @@ package edu.search.model;
 
 import edu.search.vo.WordInFileCount;
 import org.apache.commons.collections4.trie.PatriciaTrie;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
@@ -10,6 +12,8 @@ import java.util.*;
  * Works well for string match as well as prefix matches
  * Uses additional indexes to optimize implementation of suffix and substring matches
  */
+@Repository
+@Qualifier("indexedSearchTrie")
 public class IndexedSearchTrie extends SimpleSearchTrie implements IndexedSearchDataModel {
 
     private static IndexedSearchTrie instance = new IndexedSearchTrie();
