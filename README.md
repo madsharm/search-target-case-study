@@ -119,5 +119,7 @@ Observations are:
 
 # Scalability
 + The approach needs to cater to massive data as well as huge number of requests coming in.
-+ To handle massive data, we can have some sort of distributed data storage (eg. cassandra or elastic) and use functions exposed by these data storage to perform the search
-+ To handle massive requests coming in, we can scale up the search engine service by adding more nodes. Also, we should evaluate how many threads/connections can one node handle and optimize.
++ The statistics computer can be a spark pipeline with reading huge files from HDFS and using spark RDD transaformations to compute word count
++ To be able to perform search on such massive data, we can have some sort of distributed data storage (eg. cassandra or elastic) and use functions exposed by these data storage to perform the search. 
++ We can make sure ElasticSearch index is divided into multiple shards to scale the volume of data and as well as to parallelize operations. We can also introduce replicas per shard (ensuring ES is deployed as netwrok toplogy aware) to ensure fault tolerance.
++ To handle massive requests coming in, we can scale out the search engine REST service by adding more nodes. Also, we should evaluate how many threads/connections can one node handle and optimize.
